@@ -14,7 +14,8 @@ namespace Inlamningsuppgift_3
 
         public static void Continue()
         {
-            Console.WriteLine("Press any key to continue ...");
+            Console.WriteLine(" ");
+            Console.WriteLine("Press [ENTER] to continue ...");
             Console.ReadKey();
         }
     }

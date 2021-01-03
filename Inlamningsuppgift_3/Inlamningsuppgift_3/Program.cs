@@ -6,7 +6,6 @@ namespace Inlamningsuppgift_3
     class Program
     {
         private static Player player;
-        private static Inventory inventory = new Inventory();
         static void Main(string[] args)
         {
             Console.WriteLine("***********************");
@@ -49,32 +48,67 @@ namespace Inlamningsuppgift_3
 
         private static void VisitShop()
         {
+            Shop shop = new Shop();
+            shop.GenerateShop();
+
+            Console.Clear();
+            Console.WriteLine("1. Armor");
+            Console.WriteLine("2. Weapon");
+            Console.WriteLine("3. Amulets");
+            Console.WriteLine("4. Exit");
+
+            int choice = Convert.ToInt32(Console.ReadLine());
+            switch (choice)
+            {
+                case 1:
+                    shop.ShowArmor();
+                    break;
+                case 2:
+                    shop.ShowWeapon();
+                    break;
+                case 3:
+                    break;
+                case 4:
+                    Exit();
+                    break;
+                default:
+                    break;
+            }
+            StartGame();
+        }
+
+        private static void BuyArmor()
+        {
             throw new NotImplementedException();
         }
 
         private static void ShowDetails()
         {
-            Console.WriteLine($"Name: {player.Name}");
-            Console.WriteLine($"Health: {player.Health}");
-            Console.WriteLine($"Damadge: {player.Damage}");
-            Console.WriteLine($"Coins: {player.Coins}");
-            if (inventory.Weapons.Count > 0)
-            {
-                Console.WriteLine($"Weapons: {inventory.Weapons.Count}");
-            }
-
-        }
-
-        private static void GoAdventuring()
-        {
-            Enemy enemy = new Enemy();
-            Console.WriteLine($"Un no! A wild {enemy.Name} appeared. He has {enemy.Damage}dmg and {enemy.Health}hp");
-            StartAFight(enemy);
+            player.Describe();
             Utilities.Continue();
             StartGame();
         }
 
-
+        private static void GoAdventuring()
+        {
+            Console.Clear();
+            Enemy enemy = new Enemy();
+            int chance = Utilities.Randomise(min: 0, max: 101);
+            if(chance <= 10)
+            {
+                Console.WriteLine("You see nothing ...");
+                Utilities.Continue();
+                StartGame();
+            } else
+            {
+                Console.WriteLine($"Un no! A wild {enemy.Name} appeared. He has {enemy.Damage}dmg and {enemy.Health}hp");
+                Console.WriteLine("");
+                StartAFight(enemy);
+                Utilities.Continue();
+                StartGame();
+            }
+            
+        }
 
         public static void StartAFight(Enemy enemy)
         {
@@ -84,7 +118,7 @@ namespace Inlamningsuppgift_3
                 if (turnToFight == 0)
                 {
                     int playerDmg = Utilities.Randomise(min: 10, max: player.Damage);
-                    enemy.Health = enemy.Health - playerDmg;
+                    enemy.TakeDamage(playerDmg);
                     Console.WriteLine($"You hit the monster, dealing {playerDmg}dmg. ");
                     if (enemy.Health <= 0 ) { enemy.Health = 0; break; };
                     turnToFight = 1;
@@ -93,7 +127,7 @@ namespace Inlamningsuppgift_3
                 {
                     int enemyDmg = Utilities.Randomise(min: 10, max: enemy.Damage);
                     Console.WriteLine($"The monster hit you, dealing {enemyDmg}dmg");
-                    player.Health = player.Health - enemyDmg;
+                    player.TakeDamage(enemyDmg);
                     if (player.Health <= 0) { player.Health = 0; break; };
                     turnToFight = 0;
                 }
@@ -109,6 +143,7 @@ namespace Inlamningsuppgift_3
                 Console.WriteLine("You won!");
                 Utilities.Continue();
                 GetReward();
+                
             }
             else if (enemy.Health > 0)
             {
@@ -119,11 +154,14 @@ namespace Inlamningsuppgift_3
 
         private static void GetReward()
         {
+            Console.Clear();
             player.Heal();
             int exp = Utilities.Randomise(min: 30, max: 70);
             player.Experience += exp;
             int coins = Utilities.Randomise(min: 50, max: 150);
             player.Coins += coins;
+
+            player.RecalculateStats();
 
             Console.WriteLine("You gained a reward:");
             Console.WriteLine($"Experience: {exp}. Now you have: {player.Experience}");
@@ -135,11 +173,13 @@ namespace Inlamningsuppgift_3
 
         private static void CreateHero(string name)
         {
-            player = new Player { Name = name, Coins = 0, Damage = 60, Health = 100, MaxHealth = 100 };
+            player = new Player { Name = name, Coins = 0, Health = 100, MaxHealth = 100, Strength = 20 };
+            player.RecalculateStats();
         }
 
         private static void Exit()
         {
+            Console.Clear();
             Console.WriteLine("See you soon my hero!");
             Environment.Exit(0);
         }

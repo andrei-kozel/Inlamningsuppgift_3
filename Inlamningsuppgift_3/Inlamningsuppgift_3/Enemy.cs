@@ -26,7 +26,12 @@ namespace Inlamningsuppgift_3
 
         public bool IsDead()
         {
-            return _health <= 0 ? true : false;
+            return Health <= 0 ? true : false;
+        }
+
+        internal void TakeDamage(int playerDmg)
+        {
+            Health = Health - playerDmg;
         }
     }
 }

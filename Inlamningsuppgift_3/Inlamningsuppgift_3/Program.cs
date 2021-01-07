@@ -6,6 +6,7 @@ namespace Inlamningsuppgift_3
     class Program
     {
         private static Player player;
+        private static Shop shop = new Shop();
         static void Main(string[] args)
         {
             Console.WriteLine("***********************");
@@ -48,33 +49,94 @@ namespace Inlamningsuppgift_3
 
         private static void VisitShop()
         {
-            Shop shop = new Shop();
-            shop.GenerateShop();
+
 
             Console.Clear();
+            Console.WriteLine($"You have {player.Coins} coins.");
+            Console.WriteLine();
             Console.WriteLine("1. Armor");
             Console.WriteLine("2. Weapon");
             Console.WriteLine("3. Amulets");
-            Console.WriteLine("4. Exit");
+            Console.WriteLine("4. Back To Start");
 
             int choice = Convert.ToInt32(Console.ReadLine());
             switch (choice)
             {
                 case 1:
                     shop.ShowArmor();
+                    Console.Write("Chose item: ");
+                    int armorIndex = Convert.ToInt32(Console.ReadLine());
+                    BuyArmor(armorIndex);
                     break;
                 case 2:
                     shop.ShowWeapon();
+                    Console.Write("Chose item: ");
+                    int weaponIndex = Convert.ToInt32(Console.ReadLine());
+                    BuyWeapon(weaponIndex);
                     break;
                 case 3:
                     break;
                 case 4:
-                    Exit();
+                    StartGame();
                     break;
                 default:
+                    StartGame();
                     break;
             }
-            StartGame();
+        }
+
+        private static void BuyArmor(int index)
+        {
+            Armor armor = shop.GetArmor(index);
+
+            if (CheckCoins(armor.Price) == true)
+            {
+                Console.WriteLine($"You bought : {armor.Name}");
+                player.Armor = armor;
+                player.RecalculateStats();
+                Utilities.Continue();
+                VisitShop();
+            }
+            else
+            {
+                Console.WriteLine("You don't have enough coins");
+                Utilities.Continue();
+                Console.Clear();
+                VisitShop();
+            }
+        }
+
+        private static void BuyWeapon(int index)
+        {
+            Weapon weapon = shop.GetWeapon(index);
+
+            if (CheckCoins(weapon.Price) == true)
+            {
+                Console.WriteLine($"You bought : {weapon.Name}");
+                player.Weapon = weapon;
+                player.RecalculateStats();
+                Utilities.Continue();
+                VisitShop();
+            }
+            else
+            {
+                Console.WriteLine("You don't have enough coins");
+                Utilities.Continue();
+                Console.Clear();
+                VisitShop();
+            }
+        }
+
+        private static bool CheckCoins(int price)
+        {
+            if(player.Coins >= price)
+            {
+                player.Coins -= price;
+                return true;
+            } else
+            {
+                return false;
+            }
         }
 
         private static void BuyArmor()
@@ -164,8 +226,8 @@ namespace Inlamningsuppgift_3
             player.RecalculateStats();
 
             Console.WriteLine("You gained a reward:");
-            Console.WriteLine($"Experience: {exp}. Now you have: {player.Experience}");
-            Console.WriteLine($"Coins: {coins}. Now you have: {player.Coins}");
+            Console.WriteLine($"Experience: {exp}. Now you have: {player.Experience} exp");
+            Console.WriteLine($"Coins: {coins}. Now you have: {player.Coins} coins");
 
             Utilities.Continue();
             StartGame();
@@ -173,7 +235,7 @@ namespace Inlamningsuppgift_3
 
         private static void CreateHero(string name)
         {
-            player = new Player { Name = name, Coins = 0, Health = 100, MaxHealth = 100, Strength = 20 };
+            player = new Player { Name = name, Coins = 1000, Health = 100, MaxHealth = 100, Strength = 20 };
             player.RecalculateStats();
         }
 

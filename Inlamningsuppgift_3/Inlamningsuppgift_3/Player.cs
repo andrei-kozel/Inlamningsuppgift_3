@@ -10,13 +10,12 @@ namespace Inlamningsuppgift_3
         public int Health { get; set; }
         public int Strength { get; set; }
         public int MaxHealth { get; set; }
-        public int Damage { get; set;  }
+        public int Damage { get; set; }
         public double Coins { get; set; }
         public int Experience { get; set; }
         public int Level { get; set; }
         public Weapon Weapon { get; set; }
         public Armor Armor { get; set; }
-        public Inventory Invenory { get; set; }
 
         public void Heal()
         {
@@ -25,8 +24,27 @@ namespace Inlamningsuppgift_3
 
         public int CalculateDamage()
         {
-            int dmg = 100 + 5 * Strength;
-            return dmg;
+            if (Weapon != null)
+            {
+                return Weapon.Damage + 5 * Strength;
+            }
+            else
+            {
+                int dmg = 100 + 5 * Strength;
+                return dmg;
+            }
+        }
+
+        public int CalculateArmor()
+        {
+            if (Armor != null)
+            {
+                return Armor.BlockDmg + 2 * Strength; 
+            }else
+            {
+                int armor = 20 + 2 * Strength;
+                return armor;
+            }
         }
 
         public int CalculateLevel()
@@ -38,6 +56,7 @@ namespace Inlamningsuppgift_3
         {
             Damage = CalculateDamage();
             Level = CalculateLevel();
+            
         }
 
         internal void Describe()
@@ -47,9 +66,11 @@ namespace Inlamningsuppgift_3
             Console.WriteLine($"Health: {Health}");
             Console.WriteLine($"Strength: {Strength}");
             Console.WriteLine($"Damage: {Damage}");
+            if (Armor != null) { Console.WriteLine($"Armor: {Armor.BlockDmg}"); };
             Console.WriteLine($"Coins: {Coins}");
             Console.WriteLine($"Experience: {Experience}");
             Console.WriteLine($"Level: {Level}");
+            
         }
 
         internal void TakeDamage(int enemyDmg)

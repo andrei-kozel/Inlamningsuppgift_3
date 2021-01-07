@@ -9,7 +9,7 @@ namespace Inlamningsuppgift_3
         List<Armor> listOfArmors = new List<Armor>();
         List<Weapon> listOfWeapons = new List<Weapon>();
 
-        public void GenerateShop()
+        public Shop()
         {
             listOfWeapons.Add(new Weapon { Name = "Keyblade", Damage = 120, Type = "Sword", Price = 150 });
             listOfWeapons.Add(new Weapon { Name = "Lightsaber ", Damage = 140, Type = "Sword", Price = 160 });
@@ -38,5 +38,14 @@ namespace Inlamningsuppgift_3
             }
         }
 
+        public Armor GetArmor(int index)
+        {
+            return listOfArmors[index];
+        }
+
+        public Weapon GetWeapon(int index)
+        {
+            return listOfWeapons[index];
+        }
     }
 }

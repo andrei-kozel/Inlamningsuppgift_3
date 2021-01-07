@@ -88,8 +88,13 @@ namespace Inlamningsuppgift_3
         private static void BuyArmor(int index)
         {
             Armor armor = shop.GetArmor(index);
-
-            if (CheckCoins(armor.Price) == true)
+            if (player.Armor != null && armor.Name == player.Armor.Name)
+            {
+                Console.WriteLine("Sorry, but you already have this item");
+                Utilities.Continue();
+                VisitShop();
+            }
+            else if (CheckCoins(armor.Price) == true)
             {
                 Console.WriteLine($"You bought : {armor.Name}");
                 player.Armor = armor;
@@ -110,7 +115,13 @@ namespace Inlamningsuppgift_3
         {
             Weapon weapon = shop.GetWeapon(index);
 
-            if (CheckCoins(weapon.Price) == true)
+            if (player.Weapon != null && weapon.Name == player.Weapon.Name)
+            {
+                Console.WriteLine("Sorry, but you already have this item");
+                Utilities.Continue();
+                VisitShop();
+            }
+             else if (CheckCoins(weapon.Price) == true)
             {
                 Console.WriteLine($"You bought : {weapon.Name}");
                 player.Weapon = weapon;
@@ -137,11 +148,6 @@ namespace Inlamningsuppgift_3
             {
                 return false;
             }
-        }
-
-        private static void BuyArmor()
-        {
-            throw new NotImplementedException();
         }
 
         private static void ShowDetails()

@@ -49,8 +49,6 @@ namespace Inlamningsuppgift_3
 
         private static void VisitShop()
         {
-
-
             Console.Clear();
             Console.WriteLine($"You have {player.Coins} coins.");
             Console.WriteLine();
@@ -150,6 +148,9 @@ namespace Inlamningsuppgift_3
             }
         }
 
+        /// <summary>
+        /// Describe player stats
+        /// </summary>
         private static void ShowDetails()
         {
             player.Describe();
@@ -157,6 +158,9 @@ namespace Inlamningsuppgift_3
             StartGame();
         }
 
+        /// <summary>
+        /// Go adventuring. 10% chance to see nothing ... 
+        /// </summary>
         private static void GoAdventuring()
         {
             Console.Clear();
@@ -175,37 +179,52 @@ namespace Inlamningsuppgift_3
                 Utilities.Continue();
                 StartGame();
             }
-            
         }
 
+        /// <summary>
+        /// Start a fight.
+        /// </summary>
+        /// <param name="enemy">Used to specify player's enemy.</param>
         public static void StartAFight(Enemy enemy)
         {
+            // whose turn to attack. 0 - player, 1 - enemy
             int turnToFight = 0;
+            // fight while health > 0
             while (player.Health > 0 && enemy.Health > 0)
             {
+                // players turn
                 if (turnToFight == 0)
                 {
+                    // calculate damage
                     int playerDmg = Utilities.Randomise(min: 10, max: player.Damage);
+                    // enemy takes damage
                     enemy.TakeDamage(playerDmg);
                     Console.WriteLine($"You hit the monster, dealing {playerDmg}dmg. ");
                     if (enemy.Health <= 0 ) { enemy.Health = 0; break; };
+                    // pass the turn to the enemy
                     turnToFight = 1;
                 }
+                // enemy turn
                 if (turnToFight == 1)
                 {
+                    // calcuate damage
                     int enemyDmg = Utilities.Randomise(min: 10, max: enemy.Damage);
                     Console.WriteLine($"The monster hit you, dealing {enemyDmg}dmg");
+                    // enemy takes damage
                     player.TakeDamage(enemyDmg);
                     if (player.Health <= 0) { player.Health = 0; break; };
+                    // pass the turn to the player
                     turnToFight = 0;
                 }
+                // print results
                 Console.WriteLine("---");
                 Console.WriteLine($"Monster: [{enemy.Health}/{enemy.MaxHealth}]");
                 Console.WriteLine($"You: [{player.Health}/{player.MaxHealth}]");
                 Console.WriteLine("---");
-
+                // simulate fight with little delay
                 Thread.Sleep(500);
             }
+            // check if the player is a winner
             if (player.Health > 0)
             {
                 Console.WriteLine("You won!");
@@ -220,10 +239,14 @@ namespace Inlamningsuppgift_3
             }
         }
 
+        /// <summary>
+        /// Give random amount of Experience and Coins to the player. Exp: [30, 70], Coins [50, 150]
+        /// </summary>
         private static void GetReward()
         {
             Console.Clear();
             player.Heal();
+            // give random experience and coins after winning the battle
             int exp = Utilities.Randomise(min: 30, max: 70);
             player.Experience += exp;
             int coins = Utilities.Randomise(min: 50, max: 150);
@@ -239,12 +262,19 @@ namespace Inlamningsuppgift_3
             StartGame();
         }
 
+        /// <summary>
+        /// Create a hero with a given name
+        /// </summary>
+        /// <param name="name">Used to specify hero name</param>
         private static void CreateHero(string name)
         {
             player = new Player { Name = name, Coins = 1000, Health = 100, MaxHealth = 100, Strength = 20 };
             player.RecalculateStats();
         }
 
+        /// <summary>
+        /// Close the applecation
+        /// </summary>
         private static void Exit()
         {
             Console.Clear();

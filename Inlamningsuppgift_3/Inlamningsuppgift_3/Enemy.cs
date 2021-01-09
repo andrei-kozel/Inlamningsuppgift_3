@@ -11,6 +11,9 @@ namespace Inlamningsuppgift_3
         private int _damage;
         private int _health;
 
+        /// <summary>
+        /// Generate enemy with random damage, name, health
+        /// </summary>
         public Enemy()
         {
             _name = names[Utilities.Randomise(names.Length)];
@@ -24,11 +27,7 @@ namespace Inlamningsuppgift_3
         public int Health { get => _health; set => _health = value; }
         public int MaxHealth { get; set; }
 
-        public bool IsDead()
-        {
-            return Health <= 0 ? true : false;
-        }
-
+        // calculate health after taking damage
         internal void TakeDamage(int playerDmg)
         {
             Health = Health - playerDmg;

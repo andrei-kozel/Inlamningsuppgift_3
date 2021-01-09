@@ -17,11 +17,18 @@ namespace Inlamningsuppgift_3
         public Weapon Weapon { get; set; }
         public Armor Armor { get; set; }
 
+        /// <summary>
+        /// Completely heal the player. Health = 100%
+        /// </summary>
         public void Heal()
         {
             Health = MaxHealth;
         }
 
+        /// <summary>
+        /// Calculate player's damage 
+        /// </summary>
+        /// <returns>Damage [int]</returns>
         public int CalculateDamage()
         {
             if (Weapon != null)
@@ -35,6 +42,10 @@ namespace Inlamningsuppgift_3
             }
         }
 
+        /// <summary>
+        /// Calculate player's armor 
+        /// </summary>
+        /// <returns>Amount of armor [int]</returns>
         public int CalculateArmor()
         {
             if (Armor != null)
@@ -47,18 +58,27 @@ namespace Inlamningsuppgift_3
             }
         }
 
+        /// <summary>
+        /// Calculate player's level. Every 100xp = 1lvl
+        /// </summary>
+        /// <returns></returns>
         public int CalculateLevel()
         {
             return Experience / 100;
         }
 
+        /// <summary>
+        /// Recalculate players stats based on new items etc.
+        /// </summary>
         public void RecalculateStats()
         {
             Damage = CalculateDamage();
             Level = CalculateLevel();
-            
         }
 
+        /// <summary>
+        /// Print out player stats
+        /// </summary>
         internal void Describe()
         {
             Console.Clear();
@@ -73,6 +93,10 @@ namespace Inlamningsuppgift_3
             
         }
 
+        /// <summary>
+        /// Calculate health after taking damage
+        /// </summary>
+        /// <param name="enemyDmg">Used to specify taken damage</param>
         internal void TakeDamage(int enemyDmg)
         {
             Health = Health - enemyDmg;

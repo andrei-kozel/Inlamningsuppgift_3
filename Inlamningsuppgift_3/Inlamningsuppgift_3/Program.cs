@@ -13,12 +13,17 @@ namespace Inlamningsuppgift_3
             Console.WriteLine("* Welcom to The Game! *");
             Console.WriteLine("***********************");
             Console.Write("Enter your name: ");
-            string name = Console.ReadLine();
+
+            // ask user to name his hero
+            string name = Console.ReadLine(); 
 
             CreateHero(name);
             StartGame();
         }
 
+        /// <summary>
+        /// Start the game.
+        /// </summary>
         private static void StartGame()
         {
             Console.Clear();
@@ -47,6 +52,9 @@ namespace Inlamningsuppgift_3
             }
         }
 
+        /// <summary>
+        /// Visit shop. Print all available sections 
+        /// </summary>
         private static void VisitShop()
         {
             Console.Clear();
@@ -83,6 +91,10 @@ namespace Inlamningsuppgift_3
             }
         }
 
+        /// <summary>
+        /// Buy armor
+        /// </summary>
+        /// <param name="index">Used to specify which armor set player wants to buy</param>
         private static void BuyArmor(int index)
         {
             Armor armor = shop.GetArmor(index);
@@ -109,6 +121,10 @@ namespace Inlamningsuppgift_3
             }
         }
 
+        /// <summary>
+        /// Buy weapon
+        /// </summary>
+        /// <param name="index">Used to specify which weapon player wants to buy</param>
         private static void BuyWeapon(int index)
         {
             Weapon weapon = shop.GetWeapon(index);
@@ -136,6 +152,11 @@ namespace Inlamningsuppgift_3
             }
         }
 
+        /// <summary>
+        /// Check if player has enough coins to buy item
+        /// </summary>
+        /// <param name="price">Used to specify item price</param>
+        /// <returns>True or false</returns>
         private static bool CheckCoins(int price)
         {
             if(player.Coins >= price)
@@ -207,7 +228,7 @@ namespace Inlamningsuppgift_3
                 // enemy turn
                 if (turnToFight == 1)
                 {
-                    // calcuate damage
+                    // calculate damage
                     int enemyDmg = Utilities.Randomise(min: 10, max: enemy.Damage);
                     Console.WriteLine($"The monster hit you, dealing {enemyDmg}dmg");
                     // enemy takes damage

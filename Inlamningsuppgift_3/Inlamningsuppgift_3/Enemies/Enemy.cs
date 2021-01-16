@@ -22,15 +22,15 @@ namespace Inlamningsuppgift_3
             MaxHealth = _health;
         }
 
-        public string Name {get => _name; set => _name = value;}
+        public string Name { get => _name; set => _name = value; }
         public int Damage { get => _damage; set => _damage = value; }
         public int Health { get => _health; set => _health = value; }
         public int MaxHealth { get; set; }
 
         // calculate health after taking damage
-        internal void TakeDamage(int playerDmg)
+        public void TakeDamage(int playerDmg)
         {
             Health = Health - playerDmg;
         }
-    }
+    } 
 }

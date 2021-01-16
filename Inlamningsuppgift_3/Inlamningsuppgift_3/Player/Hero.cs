@@ -1,10 +1,11 @@
-﻿using System;
+﻿using Inlamningsuppgift_3.Player;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace Inlamningsuppgift_3
 {
-    class Player
+    class Hero : IPlayer
     {
         public string Name { get; set; }
         public int Health { get; set; }
@@ -17,12 +18,30 @@ namespace Inlamningsuppgift_3
         public Weapon Weapon { get; set; }
         public Armor Armor { get; set; }
 
+
         /// <summary>
-        /// Completely heal the player. Health = 100%
+        /// Calculate player's armor 
         /// </summary>
-        public void Heal()
+        /// <returns>Amount of armor [int]</returns>
+        public int CalculateArmor()
         {
-            Health = MaxHealth;
+            if (Armor != null)
+            {
+                return Armor.BlockDmg + 2 * Strength;
+            }
+            else
+            {
+                int armor = 20 + 2 * Strength;
+                return armor;
+            }
+        }
+
+        /// <summary>
+        /// Calculate player's level. Every 100xp = 1lvl
+        /// </summary>
+        public int CalculateLevel()
+        {
+            return Experience / 100;
         }
 
         /// <summary>
@@ -43,31 +62,6 @@ namespace Inlamningsuppgift_3
         }
 
         /// <summary>
-        /// Calculate player's armor 
-        /// </summary>
-        /// <returns>Amount of armor [int]</returns>
-        public int CalculateArmor()
-        {
-            if (Armor != null)
-            {
-                return Armor.BlockDmg + 2 * Strength; 
-            }else
-            {
-                int armor = 20 + 2 * Strength;
-                return armor;
-            }
-        }
-
-        /// <summary>
-        /// Calculate player's level. Every 100xp = 1lvl
-        /// </summary>
-        /// <returns></returns>
-        public int CalculateLevel()
-        {
-            return Experience / 100;
-        }
-
-        /// <summary>
         /// Recalculate players stats based on new items etc.
         /// </summary>
         public void RecalculateStats()
@@ -76,10 +70,20 @@ namespace Inlamningsuppgift_3
             Level = CalculateLevel();
         }
 
+
+        /// <summary>
+        /// Completely heal the player. Health = 100%
+        /// </summary>
+        public void Heal()
+        {
+            Health = MaxHealth;
+        }
+
+
         /// <summary>
         /// Print out player stats
         /// </summary>
-        internal void Describe()
+        public void Describe()
         {
             Console.Clear();
             Console.WriteLine($"Name: {Name}");
@@ -90,16 +94,16 @@ namespace Inlamningsuppgift_3
             Console.WriteLine($"Coins: {Coins}");
             Console.WriteLine($"Experience: {Experience}");
             Console.WriteLine($"Level: {Level}");
-            
         }
 
         /// <summary>
         /// Calculate health after taking damage
         /// </summary>
         /// <param name="enemyDmg">Used to specify taken damage</param>
-        internal void TakeDamage(int enemyDmg)
+        public void TakeDamage(int enemyDmg)
         {
             Health = Health - enemyDmg;
         }
+
     }
 }

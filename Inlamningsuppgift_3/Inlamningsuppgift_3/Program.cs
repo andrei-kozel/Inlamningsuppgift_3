@@ -5,7 +5,7 @@ namespace Inlamningsuppgift_3
 {
     class Program
     {
-        private static Player player;
+        private static Hero player;
         private static Shop shop = new Shop();
         static void Main(string[] args)
         {
@@ -289,7 +289,7 @@ namespace Inlamningsuppgift_3
         /// <param name="name">Used to specify hero name</param>
         private static void CreateHero(string name)
         {
-            player = new Player { Name = name, Coins = 1000, Health = 100, MaxHealth = 100, Strength = 20 };
+            player = new Hero { Name = name, Coins = 1000, Health = 100, MaxHealth = 100, Strength = 20 };
             player.RecalculateStats();
         }
 

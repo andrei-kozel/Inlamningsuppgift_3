@@ -11,7 +11,7 @@ namespace Inlamningsuppgift_3.Player
         int Strength { get; set; }
         int MaxHealth { get; set; }
         int Damage { get; set; }
-        double Coins { get; set; }
+        int Coins { get; set; }
         int Experience { get; set; }
         int Level { get; set; }
         Weapon Weapon { get; set; }

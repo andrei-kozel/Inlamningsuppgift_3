@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Inlamningsuppgift_3
 {
-    class Enemy
+    class Enemy : IEnemy
     {
         string[] names = new string[] { "Stenchurion", "Armos", "Chaser", "Gibo", "Kargaroc", "Mad Bomber" };
         private string _name;
@@ -31,6 +31,11 @@ namespace Inlamningsuppgift_3
         public void TakeDamage(int playerDmg)
         {
             Health = Health - playerDmg;
+        }
+
+        public int Attack()
+        {
+            return Damage;
         }
     } 
 }

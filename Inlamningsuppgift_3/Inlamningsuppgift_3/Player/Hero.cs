@@ -12,7 +12,7 @@ namespace Inlamningsuppgift_3
         public int Strength { get; set; }
         public int MaxHealth { get; set; }
         public int Damage { get; set; }
-        public double Coins { get; set; }
+        public int Coins { get; set; }
         public int Experience { get; set; }
         public int Level { get; set; }
         public Weapon Weapon { get; set; }
@@ -22,7 +22,7 @@ namespace Inlamningsuppgift_3
         /// <summary>
         /// Calculate player's armor 
         /// </summary>
-        /// <returns>Amount of armor [int]</returns>
+        /// <returns>int: amount of armor</returns>
         public int CalculateArmor()
         {
             if (Armor != null)
@@ -52,7 +52,8 @@ namespace Inlamningsuppgift_3
         {
             if (Weapon != null)
             {
-                return Weapon.Damage + 5 * Strength;
+                int randomWeaponDamage = Utilities.Randomise(min: Weapon.Damage - 10, max: Weapon.Damage + 10);
+                return randomWeaponDamage + 5 * Strength;
             }
             else
             {
@@ -102,8 +103,44 @@ namespace Inlamningsuppgift_3
         /// <param name="enemyDmg">Used to specify taken damage</param>
         public void TakeDamage(int enemyDmg)
         {
-            Health = Health - enemyDmg;
+            int finalDamage = enemyDmg;
+            if (Armor != null)
+            {
+                finalDamage = enemyDmg / (enemyDmg + Armor.BlockDmg);
+            }
+            Health -= finalDamage;
         }
 
+        /// <summary>
+        /// Pay for an item in the shop
+        /// </summary>
+        /// <param name="price">int: item price. Used to withdraw coins from player wallet</param>
+        internal void MakePayment(int price)
+        {
+            Coins -= price;
+        }
+
+        /// <summary>
+        /// Put on armor on the player
+        /// </summary>
+        /// <param name="armor">Armor: used to specify Armor object.</param>
+        internal void PutOnArmor(Armor armor)
+        {
+            Armor = armor;
+        }
+
+        /// <summary>
+        /// Take the weapon
+        /// </summary>
+        /// <param name="weapon">Weapon: used to specify Weapon object.</param>
+        internal void TakeWeapon(Weapon weapon)
+        {
+            Weapon = weapon;
+        }
+
+        public int Attack()
+        {
+            return CalculateDamage();
+        }
     }
 }

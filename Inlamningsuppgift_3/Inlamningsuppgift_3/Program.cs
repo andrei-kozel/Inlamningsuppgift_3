@@ -3,7 +3,7 @@ using System.Threading;
 
 namespace Inlamningsuppgift_3
 {
-    class Program
+    static class Program
     {
         private static Hero player;
         private static Shop shop = new Shop();
@@ -62,8 +62,8 @@ namespace Inlamningsuppgift_3
             Console.WriteLine();
             Console.WriteLine("1. Armor");
             Console.WriteLine("2. Weapon");
-            Console.WriteLine("3. Amulets");
-            Console.WriteLine("4. Back To Start");
+            Console.WriteLine("----------------");
+            Console.WriteLine("3. Back To Start");
 
             int choice = Convert.ToInt32(Console.ReadLine());
             switch (choice)
@@ -79,11 +79,6 @@ namespace Inlamningsuppgift_3
                     Console.Write("Chose item: ");
                     int weaponIndex = Convert.ToInt32(Console.ReadLine());
                     BuyWeapon(weaponIndex);
-                    break;
-                case 3:
-                    break;
-                case 4:
-                    StartGame();
                     break;
                 default:
                     StartGame();
@@ -104,10 +99,11 @@ namespace Inlamningsuppgift_3
                 Utilities.Continue();
                 VisitShop();
             }
-            else if (CheckCoins(armor.Price) == true)
+            else if (armor.CanIBuyIt(player.Coins))
             {
+                player.MakePayment(armor.Price);
                 Console.WriteLine($"You bought : {armor.Name}");
-                player.Armor = armor;
+                player.PutOnArmor(armor);
                 player.RecalculateStats();
                 Utilities.Continue();
                 VisitShop();
@@ -135,10 +131,11 @@ namespace Inlamningsuppgift_3
                 Utilities.Continue();
                 VisitShop();
             }
-             else if (CheckCoins(weapon.Price) == true)
+             else if (weapon.CanIBuyIt(player.Coins))
             {
+                player.MakePayment(weapon.Price);
                 Console.WriteLine($"You bought : {weapon.Name}");
-                player.Weapon = weapon;
+                player.TakeWeapon(weapon);
                 player.RecalculateStats();
                 Utilities.Continue();
                 VisitShop();
@@ -149,23 +146,6 @@ namespace Inlamningsuppgift_3
                 Utilities.Continue();
                 Console.Clear();
                 VisitShop();
-            }
-        }
-
-        /// <summary>
-        /// Check if player has enough coins to buy item
-        /// </summary>
-        /// <param name="price">Used to specify item price</param>
-        /// <returns>True or false</returns>
-        private static bool CheckCoins(int price)
-        {
-            if(player.Coins >= price)
-            {
-                player.Coins -= price;
-                return true;
-            } else
-            {
-                return false;
             }
         }
 
@@ -216,8 +196,8 @@ namespace Inlamningsuppgift_3
                 // players turn
                 if (turnToFight == 0)
                 {
-                    // calculate damage
-                    int playerDmg = Utilities.Randomise(min: 10, max: player.Damage);
+                    // calculate player damage
+                    int playerDmg = player.Attack();
                     // enemy takes damage
                     enemy.TakeDamage(playerDmg);
                     Console.WriteLine($"You hit the monster, dealing {playerDmg}dmg. ");
@@ -229,9 +209,9 @@ namespace Inlamningsuppgift_3
                 if (turnToFight == 1)
                 {
                     // calculate damage
-                    int enemyDmg = Utilities.Randomise(min: 10, max: enemy.Damage);
+                    int enemyDmg = enemy.Attack();
                     Console.WriteLine($"The monster hit you, dealing {enemyDmg}dmg");
-                    // enemy takes damage
+                    // player takes damage
                     player.TakeDamage(enemyDmg);
                     if (player.Health <= 0) { player.Health = 0; break; };
                     // pass the turn to the player
@@ -250,8 +230,7 @@ namespace Inlamningsuppgift_3
             {
                 Console.WriteLine("You won!");
                 Utilities.Continue();
-                GetReward();
-                
+                GetReward(); 
             }
             else if (enemy.Health > 0)
             {

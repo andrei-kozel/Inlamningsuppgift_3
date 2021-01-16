@@ -69,5 +69,6 @@ namespace Inlamningsuppgift_3
         {
             return listOfWeapons[index];
         }
+
     }
 }

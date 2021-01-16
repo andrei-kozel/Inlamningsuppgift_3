@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Inlamningsuppgift_3.Enemies
+namespace Inlamningsuppgift_3
 {
     interface IEnemy
     {
@@ -11,8 +11,5 @@ namespace Inlamningsuppgift_3.Enemies
         int Health { get; set; }
         int MaxHealth { get; set; }
 
-        int Attack();
-        void TakeDamage(int damage) { Health -= damage; }
-        int GiveExp();
     }
 }

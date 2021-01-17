@@ -37,5 +37,13 @@ namespace Inlamningsuppgift_3
         {
             return Damage;
         }
+
+
+        public int GiveExp(Hero player)
+        {
+            int expMultiplier = 4;
+            int exp = Convert.ToInt32( MaxHealth * 0.6 / (1 + player.Level) * expMultiplier);
+            return exp;
+        }
     } 
 }

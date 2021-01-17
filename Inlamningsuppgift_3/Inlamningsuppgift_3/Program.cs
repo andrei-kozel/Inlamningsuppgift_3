@@ -15,7 +15,7 @@ namespace Inlamningsuppgift_3
             Console.Write("Enter your name: ");
 
             // ask user to name his hero
-            string name = Console.ReadLine(); 
+            string name = Console.ReadLine();
 
             CreateHero(name);
             StartGame();
@@ -31,6 +31,9 @@ namespace Inlamningsuppgift_3
             Console.WriteLine("2. Show details about your character");
             Console.WriteLine("3. Visit shop");
             Console.WriteLine("4. Exit game");
+
+            // if player riches lvl 10 the game is ended
+            if (player.Level >= 10) { TheEnd(); }
 
             int choice = Convert.ToInt32(Console.ReadLine());
             switch (choice)
@@ -50,6 +53,18 @@ namespace Inlamningsuppgift_3
                 default:
                     break;
             }
+        }
+
+        /// <summary>
+        /// Show The End screen
+        /// </summary>
+        private static void TheEnd()
+        {
+            Console.Clear();
+            Console.WriteLine("Congratulations, you have reached level 10! Wow!");
+            Console.WriteLine("You beat the game!");
+            Utilities.Continue();
+            Exit();
         }
 
         /// <summary>
@@ -93,6 +108,7 @@ namespace Inlamningsuppgift_3
         private static void BuyArmor(int index)
         {
             Armor armor = shop.GetArmor(index);
+
             if (player.Armor != null && armor.Name == player.Armor.Name)
             {
                 Console.WriteLine("Sorry, but you already have this item");
@@ -131,7 +147,7 @@ namespace Inlamningsuppgift_3
                 Utilities.Continue();
                 VisitShop();
             }
-             else if (weapon.CanIBuyIt(player.Coins))
+            else if (weapon.CanIBuyIt(player.Coins))
             {
                 player.MakePayment(weapon.Price);
                 Console.WriteLine($"You bought : {weapon.Name}");
@@ -167,12 +183,13 @@ namespace Inlamningsuppgift_3
             Console.Clear();
             Enemy enemy = new Enemy();
             int chance = Utilities.Randomise(min: 0, max: 101);
-            if(chance <= 10)
+            if (chance <= 10)
             {
                 Console.WriteLine("You see nothing ...");
                 Utilities.Continue();
                 StartGame();
-            } else
+            }
+            else
             {
                 Console.WriteLine($"Un no! A wild {enemy.Name} appeared. He has {enemy.Damage}dmg and {enemy.Health}hp");
                 Console.WriteLine("");
@@ -201,7 +218,7 @@ namespace Inlamningsuppgift_3
                     // enemy takes damage
                     enemy.TakeDamage(playerDmg);
                     Console.WriteLine($"You hit the monster, dealing {playerDmg}dmg. ");
-                    if (enemy.Health <= 0 ) { enemy.Health = 0; break; };
+                    if (enemy.Health <= 0) { enemy.Health = 0; break; };
                     // pass the turn to the enemy
                     turnToFight = 1;
                 }
@@ -230,7 +247,7 @@ namespace Inlamningsuppgift_3
             {
                 Console.WriteLine("You won!");
                 Utilities.Continue();
-                GetReward(); 
+                GetReward(enemy);
             }
             else if (enemy.Health > 0)
             {
@@ -242,12 +259,12 @@ namespace Inlamningsuppgift_3
         /// <summary>
         /// Give random amount of Experience and Coins to the player. Exp: [30, 70], Coins [50, 150]
         /// </summary>
-        private static void GetReward()
+        private static void GetReward(Enemy enemy)
         {
             Console.Clear();
             player.Heal();
             // give random experience and coins after winning the battle
-            int exp = Utilities.Randomise(min: 30, max: 70);
+            int exp = enemy.GiveExp(player);
             player.Experience += exp;
             int coins = Utilities.Randomise(min: 50, max: 150);
             player.Coins += coins;
@@ -265,7 +282,7 @@ namespace Inlamningsuppgift_3
         /// <summary>
         /// Create a hero with a given name
         /// </summary>
-        /// <param name="name">Used to specify hero name</param>
+        /// <param name="name">name: used to specify hero name</param>
         private static void CreateHero(string name)
         {
             player = new Hero { Name = name, Coins = 1000, Health = 100, MaxHealth = 100, Strength = 20 };

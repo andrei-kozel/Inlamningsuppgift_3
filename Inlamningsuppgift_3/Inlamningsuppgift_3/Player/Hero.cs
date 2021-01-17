@@ -57,9 +57,18 @@ namespace Inlamningsuppgift_3
             }
             else
             {
-                int dmg = 100 + 5 * Strength;
-                return dmg;
+                int randomBaseDamage = Utilities.Randomise(min: Damage - 10, max: Damage + 10);
+                return randomBaseDamage + 5 * Strength;
             }
+        }
+
+        /// <summary>
+        /// Calculate players health
+        /// </summary>
+        /// <returns>int: healh amount</returns>
+        public int CalculateHealth()
+        {
+            return Convert.ToInt32(Health + (Health * Strength / 100 * Level));
         }
 
         /// <summary>
@@ -67,8 +76,9 @@ namespace Inlamningsuppgift_3
         /// </summary>
         public void RecalculateStats()
         {
-            Damage = CalculateDamage();
             Level = CalculateLevel();
+            Health = CalculateHealth();
+            MaxHealth = Health;
         }
 
 
@@ -136,11 +146,20 @@ namespace Inlamningsuppgift_3
         internal void TakeWeapon(Weapon weapon)
         {
             Weapon = weapon;
+            Damage = weapon.Damage;
         }
 
         public int Attack()
         {
             return CalculateDamage();
+        }
+
+        /// <summary>
+        /// Increase strength by 1.
+        /// </summary>
+        internal void IncreaceStrength()
+        {
+            Strength += 1;
         }
     }
 }

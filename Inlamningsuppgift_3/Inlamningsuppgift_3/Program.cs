@@ -252,6 +252,7 @@ namespace Inlamningsuppgift_3
             else if (enemy.Health > 0)
             {
                 Console.WriteLine($"You were killed by a {enemy.Name}");
+                Utilities.Continue();
                 Exit();
             }
         }
@@ -268,6 +269,8 @@ namespace Inlamningsuppgift_3
             player.Experience += exp;
             int coins = Utilities.Randomise(min: 50, max: 150);
             player.Coins += coins;
+            // simply increase strength by 1 after every win
+            player.IncreaceStrength();
 
             player.RecalculateStats();
 
@@ -285,7 +288,7 @@ namespace Inlamningsuppgift_3
         /// <param name="name">name: used to specify hero name</param>
         private static void CreateHero(string name)
         {
-            player = new Hero { Name = name, Coins = 1000, Health = 100, MaxHealth = 100, Strength = 20 };
+            player = new Hero { Name = name, Damage = 50, Coins = 10, Health = 100, MaxHealth = 100, Strength = 1 };
             player.RecalculateStats();
         }
 

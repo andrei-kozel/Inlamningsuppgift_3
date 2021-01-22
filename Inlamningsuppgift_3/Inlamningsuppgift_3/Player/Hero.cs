@@ -78,6 +78,7 @@ namespace Inlamningsuppgift_3
         {
             Level = CalculateLevel();
             Health = CalculateHealth();
+            Damage = CalculateDamage();
             MaxHealth = Health;
         }
 
